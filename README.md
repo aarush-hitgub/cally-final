@@ -1,60 +1,26 @@
-# Cally v1.2
+# Cally — final submission
 
-Private handoff of the current assembled Cally app, based on axm12345/cally. That original repository is unchanged.
+Live website: https://cally-v1-2.vercel.app/
 
-## Windows startup
+This is the final website snapshot. The existing Vercel production project stays connected to aarush-hitgub/cally-v1.2; this repository is a separate submission snapshot and changes here do not redeploy the submitted URL. Cally Showcase is a separate copy for a protected real call to the owner's approved test phone.
 
-Use Node.js 24 LTS. Accept the repository invitation, then:
+## Judge walkthrough
+1. Open the live website in Chrome or Safari. Allow microphone access if using speech, or use Type instead.
+2. Choose a location by typing, current location or map pin. Adjust the 1–20 km radius.
+3. Describe a repair request and confirm the details.
+4. Watch roughly one minute of SIMULATED conversations against real local business listings. No businesses are called. Prices, availability and dialogue are illustrative, not those shops' actual quotes.
+5. Compare results, inspect a simulated transcript, or open a real shop listing.
+6. Use the credit button to preview 1/5/10/custom credit packs, U-topia's 5% merchant-funded demo discount, debit-card preview and alternating PromptPay reference images. No real payment verification exists; do not transfer money during the demo.
+7. Settings support dark mode and English/Thai/Cantonese UI and call voice preferences. Defaults are English UI and Thai voice.
 
-```powershell
-git clone https://github.com/aarush-hitgub/cally-v1.2.git
-cd cally-v1.2
-npm.cmd ci
-npm.cmd run dev -- --hostname 127.0.0.1 --port 3200
-```
+No payment or registration is required for judging. Three demo credits are supplied and search reservations are returned. The site runs on Vercel with the laptop switched off. Anthropic and Google Places credentials, balances, quotas and uptime remain required for understanding requests and live listing discovery.
 
-Open http://127.0.0.1:3200. Alternatively: npm.cmd run build, then npm.cmd run start -- --hostname 127.0.0.1 --port 3200.
+## Run locally
+Node.js 24.x is required. Run npm.cmd ci, then npm.cmd run dev -- --hostname 127.0.0.1 --port 3200. Production check: npm.cmd run build. Credentials are not committed. Copy the owner's existing .env.local privately. Final hosted mode needs ANTHROPIC_API_KEY, GOOGLE_MAPS_API_KEY, CALLY_DEMO_COOKIE_SECRET and CALL_LANGUAGE=th; keep LIVE_SHOP_NUMBERS empty. No template env files were substituted.
 
-## Configuration transfer — no templates
+The final demo does not include official U-bot integration or real payments. Do not describe simulated data as verified savings or genuine shop quotes. Local credit state is SQLite; Vercel uses signed demo-session cookies, not a real money ledger. API keys remain server-only.
 
-Copy the owner's EXISTING populated files privately into these exact paths before starting:
+## Before judging
+Test from a private browser/second device, keep provider quotas and billing available, avoid last-minute pushes to the deployed source repository, and keep a short backup recording. Monitor the Vercel project for deployment errors. Keep secrets outside Git; the original repository and caller configurations remain unchanged.
 
-- .env.local
-- caller/controller/.env
-- caller/connector/.env
-- caller/controller/.private.key
-
-These files were blocked from repository publication by automatic approval review. No dummy configuration files have been substituted. The original files remain on the owner's machine in the local assembled app. Restart after copying or changing env files. Never put provider keys in browser code.
-
-The root .env.local contains the Anthropic key, ElevenLabs key, agent ID, imported SIP phone ID, Thai default call language and one live destination. Confirming a request can place a paid call to the owner's test phone ending 7771. Clear LIVE_SHOP_NUMBERS and restart to disable real calls. Remaining shops are mock; do not substitute real destinations without an authorized test.
-
-## What changed in v1.2
-
-- Compact animated settings panel, persistent dark/light mode.
-- English, Thai and Cantonese app language, independently selectable AI call voice language; default English UI and Thai voice. Cantonese requires selection.
-- Circular flags and globe icons for language settings.
-- Speech waits for 1.8 seconds of quiet, preserving speech across short recognition sessions. Stop submits immediately. No microphone visualizer; that feature was reverted.
-- Location sheet map button: tap, drag a pin or pan and pin the map center, then confirm. OpenStreetMap resolves street/area names; no Google key required. Last confirmed map pin is stored per browser.
-
-## Calling architecture
-
-Default: this app's server -> ElevenLabs SIP outbound call -> existing Vonage phone line. Direct mode needs no ngrok or extra laptop connector. Per-call business_name, request_summary, constraints, questions and reference_time are supplied. Voice preference affects new calls. Speech input follows app language.
-
-The hosted ElevenLabs agent, its tools/defaults and imported phone line remain in the shared provider account; cloning does not recreate them. Changes to the shared agent affect everyone using it. The directory is fixed demo data. Selecting a map point does NOT discover nearby real shops or recalculate shop distances. Four shops remain mock; failed live starts can fall back to mock. Never charge for, or claim real savings from, mock quotes.
-
-## Optional laptop backup
-
-Run npm.cmd --prefix caller run setup to install it. Use the direct integration first. The backup needs persistent processes and a public tunnel; caller/start-all.cmd starts them. Set CALL_MODE=caller, CALLER_URL and CALLER_TOKEN in the root env only when selecting it. Original tunnel hostnames are not portable. caller/controller/cally-calls.js supplies the newer app endpoints; caller/CALLING-HANDOFF.md is historical standalone documentation and predates those additions. Keep recording disabled.
-
-## Validation and limitations
-
-Production build and TypeScript passed. Map pin dragging, confirmation and street-name resolution were browser-tested. Speech pause logic was checked with simulated recognition events. Packaging placed no calls; verify one approved destination on the receiving machine.
-
-Web dependency audit reports two affected packages (one moderate, one high via PostCSS/Next.js). Backup service installs previously reported zero. Preserve the lockfile for reproducibility; review upgrades separately instead of audit fix --force. A parent lockfile warning on the original laptop did not prevent building.
-
-There is no authentication protecting paid-call endpoints. Keep local until access control is added; do not expose this configuration publicly. Real payments/credits are not implemented; CALLY-PAYMENTS-STANDBY.md is a proposal. See UPSTREAM-README.md for original project documentation; this README describes the current handoff.
-
-## Location-based demo update
-The public demo now resolves real business listings for the selected area and repair request through Google Places (GOOGLE_MAPS_API_KEY is server-only). No phone numbers are requested for discovery, and those shops are not called. Conversations and sample prices are explicitly simulated; timings are staggered over roughly 40–65 seconds. View shop listing opens the real listing rather than dialing. U-bot integration was cancelled.
-
-Search radius: location picker now offers a persistent 1–20 km slider, default 5 km. Listing results are filtered by straight-line distance from the map point or resolved typed area; shops beyond the limit are excluded.
+Upstream history and LICENSE files are preserved. Current source was production-built and radius filtering, location listings, payment-demo state and UI were verified before this snapshot. See the other handoff documents for implementation limitations.
